@@ -27,4 +27,7 @@ scrape_configs:
     metrics_path: "/actuator/prometheus"
     scrape_interval: 3s
     static_configs:
-      - targets: [ "livraria-app:8080" ]
+      - targets: [ "localhost:8080" ]
+#      - targets: [ "k8s_nginx2-pod:8080" ]
+
+#  docker run -p 9090:9090 -v /Users/ivana/IdeaProjects/projeto-devops/livraria-devops/prometheus/prometheus.yml prom/prometheus

@@ -21,9 +21,28 @@ public class LivroController {
     @Autowired
     private LivroService livroService;
 
+    private final MeterRegistry meterRegitry;
+
+    public LivroController(MeterRegistry meterRegitry) {
+        this.meterRegitry = meterRegitry;
+    }
+
     @GetMapping("/")
     public List<Livro> listarTodos() {
         return livroService.obterTodos();
     }
 
+    @GetMapping("/quantidade-romance")
+    public ResponseEntity obterQtdDrama() {
+        Counter contador = Counter.builder("quantidade_livros_romance")
+                .tag("quantidade_romance", "qtdRomance")
+                .description("Quantidade de livros de romance").register(meterRegitry);
+
+        livroService.obterTodos().forEach(livro -> {
+            if (livro.getGenero().equalsIgnoreCase("Romance")) {
+                contador.increment();
+            }
+        });
+        return ResponseEntity.ok("OK");
+    }
 }
